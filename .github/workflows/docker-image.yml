@@ -46,4 +46,7 @@ jobs:
         context: ./player-service-app
         file: ./player-service-app/Dockerfile
         push: ${{ github.event_name == 'push' }}
-        tags: ghcr.io/baoguixue/player-service:latest
+        tags: |
+          ghcr.io/baoguixue/player-service:latest
+          ghcr.io/baoguixue/player-service:${{ github.sha }}
+          ${{ github.event.pull_request.number && format('ghcr.io/baoguixue/player-service:pr-{0}', github.event.pull_request.number) || '' }}
