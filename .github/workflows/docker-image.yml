@@ -1,13 +1,15 @@
 name: CI/CD - GHCR Build & Deploy
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    types:
+      - closed
+    branches:
+      - main
 
 jobs:
   build-and-push:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -45,7 +47,7 @@ jobs:
       with:
         context: ./player-service-app
         file: ./player-service-app/Dockerfile
-        push: ${{ github.event_name == 'push' }}
+        push: true
         tags: |
           ghcr.io/baoguixue/player-service:latest
           ghcr.io/baoguixue/player-service:${{ github.sha }}
